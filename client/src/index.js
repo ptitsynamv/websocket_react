@@ -1,8 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import React from 'react'
+import App from './component/App';
+import { render } from 'react-dom'
+import storeFactory from './store/storeFactory'
+import { addUser } from './actions/userActions';
+import {addMessage} from "./actions/messageActions";
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+const store = storeFactory();
+
+store.dispatch(addUser("w@w.com", false, true, true));
+store.dispatch(addMessage("w@w.com", "text w@w.com", "blue"));
+
+console.log('current state', store.getState());
+
+
+render(
+    <App/>,
+    document.getElementById('root')
+);
