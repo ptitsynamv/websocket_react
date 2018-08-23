@@ -12,6 +12,7 @@ export const addUser = (email, isAdmin, isMute, isBan, isOnline) =>
         isOnline
     });
 
+
 export const muteUser = (id, isMute) =>
     ({
         type: C.MUTE_USER,

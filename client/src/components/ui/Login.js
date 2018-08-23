@@ -1,40 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 
-const Login = ({onNewUser = f => f}) => {
+class Login extends React.Component {
 
-    let _email, _password;
+    constructor(props) {
+        super(props);
+        this.submit = this.submit.bind(this)
+    }
 
-    const submit = e => {
+    submit(e) {
+        const {_email, _password} = this.refs;
+        const {onNewUser} = this.props;
         e.preventDefault();
         onNewUser(_email.value, _password.value);
         _email.value = '';
         _password.value = '';
         _email.focus()
-    };
+    }
 
-    return (
-        <form onSubmit={submit}>
-            <input ref={input => _email = input}
-                   type="text"
-                   placeholder="email"
-                   required
-            />
-            <input
-                ref={input => _password = input}
-                type="password"
-                placeholder="password"
-                required
-            />
-
-            <button>Submit</button>
-        </form>
-    )
-
+    render() {
+        return (
+            <form onSubmit={this.submit}>
+                <input ref="_email"
+                       type="text"
+                       placeholder="email"
+                       required
+                />
+                <input
+                    ref="_password"
+                    type="password"
+                    placeholder="password"
+                    required
+                />
+                <button>Submit</button>
+            </form>
+        )
+    }
 };
 
-Login.contextTypes = {
+Login.propTypes = {
     onNewUser: PropTypes.func
-};
+}
 
+Login.defaultProps = {
+    onNewUser: f => f
+}
 export default Login

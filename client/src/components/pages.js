@@ -1,7 +1,11 @@
 import React from 'react'
 import {Link, NavLink, Route} from 'react-router-dom'
-import {MainMenu,AboutMenu } from './ui/Menu'
+import {MainMenu, AboutMenu} from './ui/Menu'
 import Login from "./ui/Login";
+import {ContainerLogin, ContainerChat} from './containers'
+import {loginUser, logoutUser} from "../actions/currentUserAction";
+import PropTypes from "prop-types";
+import Chat from './ui/Chat'
 
 const selectedStyle = {
     backgroundColor: "white",
@@ -19,7 +23,7 @@ export const LoginPage = () =>
     <PageTemplate>
         <section className="login">
             <h1>[Login Page]</h1>
-            <Login/>
+            <ContainerLogin/>
         </section>
     </PageTemplate>
 
@@ -28,17 +32,15 @@ export const ChatPage = () =>
     <PageTemplate>
         <section className="chat">
             <h1>[Chap Page]</h1>
-            <nav>
-                <Link to="about-chat">[About Chat]</Link>
-            </nav>
+            <ContainerChat/>
         </section>
     </PageTemplate>
 
 
-export const AboutPage = ({ match }) =>
+export const AboutPage = ({match}) =>
     <PageTemplate>
         <section className="about">
-            <Route component={AboutMenu} />
+            <Route component={AboutMenu}/>
             <Route exact path="/about" component={CompanyPage}/>
             <Route path="/about/services" component={ServicePage}/>
         </section>
@@ -53,13 +55,6 @@ export const ServicePage = () =>
             Praesent libero. Sed cursus ante dapibus
             diam. Sed nisi. Nulla quis sem at nibh
             elementum imperdiet. Duis sagittis ipsum.
-            Praesent mauris. Fusce nec tellus sed
-            augue semper porta. Mauris massa.
-            Vestibulum lacinia arcu eget nulla.
-            Class aptent taciti sociosqu ad litora
-            torquent per conubia nostra, per inceptos
-            himenaeos. Curabitur sodales ligula in
-            libero.
         </p>
     </section>
 

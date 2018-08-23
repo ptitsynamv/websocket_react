@@ -1,27 +1,14 @@
 import C from '../constants/constants'
+import {fetchThenDispatch} from "../lib/api-helpers";
 
-// export const loginUser = (id, email, isAdmin, isMute, isBan, isOnline) =>
-//     ({
-//         type: C.LOGIN_USER,
-//         id,
-//         email,
-//         isAdmin,
-//         isMute,
-//         isBan,
-//         isOnline
-//     });
-
-//TODO заглушка
-export const loginUser = (email, password) =>
-    ({
-        type: C.LOGIN_USER,
-        id:1,
-        email,
-        isAdmin: true,
-        isMute: true,
-        isBan: true,
-        isOnline: true
-    });
+export const loginUser = (email, password) => dispatch =>
+    fetchThenDispatch(
+        dispatch,
+        'http://localhost:4000/api/auth/login',
+        'POST',
+        JSON.stringify({email, password}),
+        C.LOGIN_USER
+    );
 
 
 export const logoutUser = () =>
