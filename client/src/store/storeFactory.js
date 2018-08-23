@@ -1,6 +1,7 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { users } from '../reducers/userReducers';
+import {createStore, combineReducers, applyMiddleware} from 'redux'
+import {users} from '../reducers/userReducers';
 import {messages} from "../reducers/messageReducers";
+import {currentUser} from "../reducers/currentUserReducers";
 import stateData from './state'
 
 const logger = store => next => action => {
@@ -20,9 +21,9 @@ const saver = store => next => action => {
     return result
 };
 
-const storeFactory = (initialState=stateData) =>
+const storeFactory = (initialState = stateData) =>
     applyMiddleware(logger, saver)(createStore)(
-        combineReducers({users, messages}),
+        combineReducers({users, messages, currentUser}),
         (localStorage['redux-store']) ?
             JSON.parse(localStorage['redux-store']) :
             initialState

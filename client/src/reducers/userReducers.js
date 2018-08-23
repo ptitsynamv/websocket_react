@@ -8,8 +8,30 @@ export const user = (state = {}, action) => {
                 "email": action.email,
                 "isAdmin": action.isAdmin,
                 "isMute": action.isMute,
-                "isBan": action.isBan
+                "isBan": action.isBan,
+                "isOnline": action.isOnline
             };
+        case C.MUTE_USER:
+            return (state.id !== action.id) ?
+                state :
+                {
+                    ...state,
+                    isMute: action.isMute
+                };
+        case C.BAN_USER:
+            return (state.id !== action.id) ?
+                state :
+                {
+                    ...state,
+                    isBan: action.isBan
+                };
+        case C.ONLINE_USER:
+            return (state.id !== action.id) ?
+                state :
+                {
+                    ...state,
+                    isOnline: action.isOnline
+                };
         default:
             return state
     }
@@ -18,6 +40,21 @@ export const user = (state = {}, action) => {
 export const users = (state = [], action) => {
     switch (action.type) {
         case C.ADD_USER:
+            return [
+                ...state,
+                user({}, action)
+            ];
+        case C.MUTE_USER:
+            return [
+                ...state,
+                user({}, action)
+            ];
+        case C.BAN_USER:
+            return [
+                ...state,
+                user({}, action)
+            ];
+        case C.ONLINE_USER:
             return [
                 ...state,
                 user({}, action)

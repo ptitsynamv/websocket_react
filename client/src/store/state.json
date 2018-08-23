@@ -1,8 +1,12 @@
 {
-  "user": {
+  "currentUser": {
     "id": 1,
     "email": "admin@admin.com",
-    "password": "qwerty"
+    "password": "qwerty",
+    "isAdmin": true,
+    "isMute": false,
+    "isBan": false,
+    "token": "nvhtukrmcwi"
   },
   "users": [
     {
@@ -10,14 +14,16 @@
       "email": "admin@admin.com",
       "isAdmin": true,
       "isMute": false,
-      "isBan": false
+      "isBan": false,
+      "isOnline": false
     },
     {
       "id": 2,
       "email": "admin@admin.com2",
       "isAdmin": false,
       "isMute": false,
-      "isBan": false
+      "isBan": false,
+      "isOnline": false
     }
   ],
   "messages": [
