@@ -1,10 +1,10 @@
 import C from '../constants/constants'
 
 
-export const addUser = (email, isAdmin, isMute, isBan, isOnline) =>
+export const addUser = ({id, email, isAdmin, isMute, isBan, isOnline}) =>
     ({
         type: C.ADD_USER,
-        id: Math.random(),
+        id,
         email,
         isAdmin,
         isMute,

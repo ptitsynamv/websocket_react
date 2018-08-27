@@ -6,7 +6,7 @@ import App from './components/App';
 import storeFactory from './store/storeFactory'
 import { Provider } from 'react-redux'
 
-const store = storeFactory(false, window.__INITIAL_STATE__);
+const store = storeFactory();
 
 window.React = React;
 window.store = store;

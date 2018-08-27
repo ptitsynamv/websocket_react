@@ -41,7 +41,7 @@ export const users = (state = [], action) => {
     switch (action.type) {
         case C.ADD_USER:
             return [
-                ...state,
+                ...state.filter(v => v.id !== action.id),
                 user({}, action)
             ];
         case C.MUTE_USER:
@@ -63,3 +63,5 @@ export const users = (state = [], action) => {
             return state
     }
 };
+
+

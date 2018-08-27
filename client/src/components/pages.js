@@ -1,17 +1,9 @@
 import React from 'react'
-import {Link, NavLink, Route} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import {MainMenu, AboutMenu} from './ui/Menu'
-import Login from "./ui/Login";
 import {ContainerLogin, ContainerChat} from './containers'
-import {loginUser, logoutUser} from "../actions/currentUserAction";
-import PropTypes from "prop-types";
-import Chat from './ui/Chat'
-
-const selectedStyle = {
-    backgroundColor: "white",
-    color: "slategray"
-};
-
+import {AuthGuard} from '../lib/auth-guard-helper';
+import {logoutUser} from '../actions/currentUserAction'
 
 const PageTemplate = ({children}) =>
     <div className="page">
@@ -19,25 +11,40 @@ const PageTemplate = ({children}) =>
         {children}
     </div>
 
-export const LoginPage = () =>
-    <PageTemplate>
+export const LoginPage = (data) => {
+    if (AuthGuard()) {
+        data.history.push('/chat')
+    }
+    return (<PageTemplate>
         <section className="login">
-            <h1>[Login Page]</h1>
-            <ContainerLogin/>
+            <h2>[Login Page]</h2>
+            <ContainerLogin history={data.history}/>
         </section>
-    </PageTemplate>
+    </PageTemplate>)
+};
+
+export const LogoutPage = (data) => {
+    window.store.dispatch(logoutUser());
+    data.history.push('/');
+    return true;
+};
 
 
-export const ChatPage = () =>
-    <PageTemplate>
-        <section className="chat">
-            <h1>[Chap Page]</h1>
-            <ContainerChat/>
-        </section>
-    </PageTemplate>
 
+export const ChatPage = (data) => {
+    if (!AuthGuard()) {
+        data.history.push('/')
+    }
+    return (<PageTemplate>
+            <section className="chat">
+                <h2>[Chap Page]</h2>
+                <ContainerChat/>
+            </section>
+        </PageTemplate>
+    )
+};
 
-export const AboutPage = ({match}) =>
+export const AboutPage = () =>
     <PageTemplate>
         <section className="about">
             <Route component={AboutMenu}/>

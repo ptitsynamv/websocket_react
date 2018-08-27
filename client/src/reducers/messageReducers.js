@@ -4,11 +4,11 @@ export const message = (state = {}, action) => {
     switch (action.type) {
         case C.ADD_MESSAGE:
             return {
-                "id": action.id,
-                "author": action.author,
-                "text": action.text,
-                "color": action.color,
-                "time": action.time,
+                "userId":action.userId,
+                "userName":action.userName,
+                "comment":action.comment,
+                "color":action.color,
+                "date":action.date
             };
         default:
             return state

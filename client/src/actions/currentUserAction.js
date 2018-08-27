@@ -1,13 +1,13 @@
 import C from '../constants/constants'
-import {fetchThenDispatch} from "../lib/api-helpers";
+import {fetchThenDispatchLogin} from "../lib/api-helpers";
 
-export const loginUser = (email, password) => dispatch =>
-    fetchThenDispatch(
+export const loginUser = (email, password, history) => dispatch =>
+    fetchThenDispatchLogin(
         dispatch,
         'http://localhost:4000/api/auth/login',
         'POST',
         JSON.stringify({email, password}),
-        C.LOGIN_USER
+        history
     );
 
 
@@ -15,3 +15,4 @@ export const logoutUser = () =>
     ({
         type: C.LOGOUT_USER
     });
+

@@ -1,38 +1,36 @@
 import {NavLink} from 'react-router-dom'
 import React from 'react'
+import {AuthGuard} from '../../lib/auth-guard-helper'
 
 const selectedStyle = {
     backgroundColor: "white",
-    color: "slategray"
-};
-
-const unSelectedStyle = {
-    backgroundColor: "black",
-    color: "slategray"
+    color: 'red'
 };
 
 export const MainMenu = () =>
     <nav className="main-menu">
-        <NavLink to="/">
+        {!AuthGuard() &&
+        <NavLink exact to="/" activeStyle={selectedStyle}>
             [Login Page]
-        </NavLink>
+        </NavLink>}
         <NavLink to="/chat" activeStyle={selectedStyle}>
             [Chat Page]
         </NavLink>
         <NavLink to="/about" activeStyle={selectedStyle}>
             [About Page]
         </NavLink>
+
+        {AuthGuard() &&
         <NavLink to="/logout" activeStyle={selectedStyle}>
             [Logout Page]
-        </NavLink>
+        </NavLink>}
     </nav>
 
 
-export const AboutMenu = ({match}) =>
+export const AboutMenu = () =>
     <div className="about-menu">
         <li>
-            <NavLink to="/about"
-                     style={match.isExact ? selectedStyle : unSelectedStyle}>
+            <NavLink exact to="/about" activeStyle={selectedStyle}>
                 [Company]
             </NavLink>
         </li>

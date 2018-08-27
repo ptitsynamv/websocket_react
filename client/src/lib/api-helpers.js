@@ -1,12 +1,12 @@
 import fetch from 'isomorphic-fetch';
-import {history} from "../helpers/history";
+import C from "../constants/constants";
 
 const parseResponse = response => response.json();
 
 const logError = error => console.error(error);
 
 
-export const fetchThenDispatch = (dispatch, url, method, body, actionType) =>
+export const fetchThenDispatchLogin = (dispatch, url, method, body, history) =>
     fetch(url,
         {
             method,
@@ -20,10 +20,10 @@ export const fetchThenDispatch = (dispatch, url, method, body, actionType) =>
         .then(parseResponse)
         .then(jsonData => {
             return {
-                ...jsonData, type: actionType
+                ...jsonData, type: C.LOGIN_USER
             }
         })
         .then(dispatch)
-        .then(history.push('/chat'))
+        .then(() => history.push('/chat'))
         .catch(logError);
 
