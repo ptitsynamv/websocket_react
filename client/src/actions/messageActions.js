@@ -1,9 +1,10 @@
 import C from '../constants/constants'
 
 
-export const addMessage = ({userId, userName, comment, color, date}) =>
+export const addMessage = ({id, userId, userName, comment, color, date}) =>
     ({
         type: C.ADD_MESSAGE,
+        id,
         userId,
         userName,
         comment,

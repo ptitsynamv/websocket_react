@@ -23,6 +23,7 @@ function getLastMessages(limit = 2, skip = 0, currentSocket = false) {
             }
             allModels.forEach((value) => {
                 messageArray.push({
+                    id:value._id,
                     userId: value.user._id,
                     userName: value.user.email,
                     comment: value.comment,
@@ -46,7 +47,6 @@ function emitEvent(nameEvent, message, currentSocket = false) {
     if (currentSocket) {
         currentSocket.emit(nameEvent, message);
     } else {
-        console.log(`emitEvent ${nameEvent}`, peers.keys());
         peers.forEach((value) => {
             value.emit(nameEvent, message);
         });
@@ -72,12 +72,8 @@ function updateUsers(userUpdate = null) {
 
 module.exports = function (wss) {
     wss.on('connection', (socket) => {
-        console.log('connection');
 
         socket.on('login', (data) => {
-            console.log('login');
-
-
             if (!data) {
                 helpFunctions.errorSocket(socket, `Login data is uncorrected : ${data}`, 400);
                 return;
@@ -218,6 +214,7 @@ module.exports = function (wss) {
         });
 
         socket.on('mute', (message) => {
+
             if (!message || !message.sender) {
                 helpFunctions.errorSocket(socket, `[mute] mute data is uncorrected : ${message}`, 400);
                 return;
@@ -328,7 +325,6 @@ module.exports = function (wss) {
         });
 
         socket.on('getPreviousMessage', (message) => {
-            console.log('getPreviousMessage', message);
 
             if (!message ||  !message.paginationLimit) {
                 helpFunctions.errorSocket(socket, `[getPreviousMessage] data is uncorrected : ${message}`, 400);

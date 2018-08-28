@@ -8,9 +8,12 @@ export const socketClose = () => {
 };
 
 export const emitLogin = (token) => {
-    console.log('emitLogin');
-    socket = io(`http://localhost:4000`);
-    socket.emit('login', token);
+    return new Promise((resolve, reject) =>{
+        if(!socket) {
+            socket = io(`http://localhost:4000`);
+        }
+        resolve(socket.emit('login', token));
+    })
 };
 
 export const emitLogout = (token) => {
@@ -38,29 +41,29 @@ export const emitMute = ({userForMuteId, sender}) => {
 
 
 export const subscribeAllUsers = (callback) => {
-    socket.on('allUsers', (data) => {
-        callback(data);
-    }, (data) => {
-        console.log('subscribeAllUsers callback', data);
+    return new Promise((resolve, reject) => {
+        socket.on('allUsers', (data) => {
+            resolve(callback(data))
+        })
     })
 };
 
 export const subscribeMessage = (callback) => {
-    socket.on('message', (data) => {
-        callback(data);
+    return new Promise((resolve, reject) => {
+        socket.on('message', (data) => {
+            resolve(callback(data));
+        })
     })
 };
 
 export const subscribeError = (callback) => {
     socket.on('serverError', (data) => {
-        console.log('serverError', data);
         callback(data);
     })
 };
 
 export const subscribeDisconnect = (callback) => {
     socket.on("disconnect", (data) => {
-        console.log('disconnect', data);
         callback(data);
     })
 };

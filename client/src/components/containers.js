@@ -1,16 +1,18 @@
 import {connect} from 'react-redux';
 import Login from './ui/Login';
 import UserDetails from './ui/UserDetails'
-import {loginUser} from "../actions/currentUserAction";
+import {loginUser, logoutUser, updateCurrentUser} from "../actions/currentUserAction";
 import {findById, sortFunction} from '../lib/array-helpers'
 import Chat from './ui/Chat'
 import {addUser} from "../actions/userActions";
 import {addMessage} from "../actions/messageActions";
 import {updatePagination} from "../actions/paginationAction";
+import {addError, removeError} from "../actions/errorAction";
+import ErrorHandler from './ui/ErrorHandler'
 
 
 export const ContainerLogin = connect(
-    ({history}) => history,
+    history => (history),
     dispatch =>
         ({
             onNewUser(email, password, history) {
@@ -25,27 +27,49 @@ export const ContainerUserDetails = connect(
 
 
 export const ContainerChat = connect(
-    state =>
+    (state, data) =>
         ({
-            currentUser: window.store.getState().currentUser,
-            users: window.store.getState().users,
-            sortMessages: [...window.store.getState().messages].sort(sortFunction(window.store.getState().sort)),
-            // messages: window.store.getState().messages,
-            pagination: window.store.getState().pagination
+            currentUser: state.currentUser,
+            users: state.users,
+            sortMessages: [...state.messages].sort(sortFunction(state.sort)),
+            pagination: state.pagination,
+            history: data.history
         }),
     dispatch =>
         ({
             onAllUser({id, email, isAdmin, isMute, isBan, isOnline}) {
                 dispatch(addUser({id, email, isAdmin, isMute, isBan, isOnline}))
             },
-            onMessage({userId, userName, comment, color, date}) {
-                dispatch(addMessage({userId, userName, comment, color, date}))
+            onMessage({id, userId, userName, comment, color, date}) {
+                dispatch(addMessage({id, userId, userName, comment, color, date}))
             },
             onGetPreviousMessage() {
                 return new Promise((resolve, reject) => {
                     resolve(dispatch(updatePagination()));
                 })
+            },
+            onError({code, message}) {
+                dispatch(addError({code, message}))
+            },
+            onLogout() {
+                dispatch(logoutUser())
+            },
+            onUpdateCurrentUser({isMute, isBan, isOnline}){
+                dispatch(updateCurrentUser({isMute, isBan, isOnline}))
             }
         })
 )(Chat);
+
+export const ErrorContainer = connect(
+    state =>
+        ({
+            error: state.error
+        }),
+    dispatch =>
+        ({
+            onCloseErrorModal() {
+                dispatch(removeError())
+            }
+        })
+)(ErrorHandler);
 

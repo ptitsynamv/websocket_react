@@ -31,6 +31,10 @@ export const currentUser = (state = getCurrentUserFromLocalStorage(), action) =>
         case C.LOGOUT_USER:
             removeCurrentUserFromLocalStorage();
             return {};
+        case C.UPDATE_USER:
+            return {
+                ...state, ...action
+            };
         default:
             return state
     }

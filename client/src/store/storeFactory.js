@@ -4,6 +4,7 @@ import {messages} from "../reducers/messageReducers";
 import {currentUser} from "../reducers/currentUserReducers";
 import {sort} from "../reducers/sortRedusers";
 import {pagination} from "../reducers/paginationReducers";
+import {error} from "../reducers/errorRedusers";
 //import stateData from './state'
 import thunk from 'redux-thunk'
 
@@ -17,7 +18,8 @@ const clientLogger = store => next => action => {
         console.log('next state', store.getState());
         console.groupEnd();
         return result
-    } else {
+    }
+    else {
         return next(action)
     }
 };
@@ -36,7 +38,14 @@ const middleware = server => [
 
 const storeFactory = (server = false, initialState = {}) =>
     applyMiddleware(...middleware(server))(createStore)(
-        combineReducers({users, messages, currentUser, sort, pagination}),
+        combineReducers({
+            users,
+            messages,
+            currentUser,
+            sort,
+            pagination,
+            error
+        }),
         initialState
     );
 

@@ -16,3 +16,10 @@ export const logoutUser = () =>
         type: C.LOGOUT_USER
     });
 
+export const updateCurrentUser = ({isMute, isBan, isOnline}) =>
+    ({
+        type: C.UPDATE_USER,
+        isMute,
+        isBan,
+        isOnline
+    });

@@ -53,3 +53,53 @@
 [2018-08-27T17:20:35.048] [ERROR] socket - code: 400, message: Login data is uncorrected : null
 [2018-08-27T17:20:45.875] [ERROR] socket - code: 400, message: Login data is uncorrected : null
 [2018-08-27T18:12:44.618] [ERROR] socket - code: 400, message: [Ban] User for ban with id: 5b7aaca42c76d34e09e4f966 is admin
+[2018-08-28T10:13:48.572] [ERROR] socket - code: 403, message: [message] Current user with id: 5b7aadc2d03ae050bdd5cdb9 is mute
+[2018-08-28T10:31:50.334] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:37:18.357] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:46:07.655] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:47:15.333] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:47:16.611] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:48:13.788] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:48:17.516] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:54:01.125] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:55:10.621] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:55:13.156] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:56:09.305] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T10:56:11.183] [ERROR] socket - code: 401, message: TEST error
+[2018-08-28T11:51:32.000] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:51:57.133] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:52:52.057] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:53:31.184] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:54:01.799] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:54:50.877] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:55:07.939] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:55:42.248] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:56:19.727] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:57:04.542] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:57:59.035] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:58:09.227] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:58:18.355] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T11:58:56.681] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T12:00:17.765] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T12:00:17.816] [ERROR] socket - code: 400, message: [logout] Logout data is uncorrected : null
+[2018-08-28T12:00:31.516] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T12:00:31.553] [ERROR] socket - code: 400, message: [logout] Logout data is uncorrected : null
+[2018-08-28T12:00:35.888] [ERROR] socket - code: 401, message: [mute] The tokens lifetime has expired
+[2018-08-28T12:00:35.925] [ERROR] socket - code: 400, message: [logout] Logout data is uncorrected : null
+[2018-08-28T12:12:44.936] [ERROR] socket - code: 403, message: [login] Current user with id: 5b7aadc2d03ae050bdd5cdb9 isBan
+[2018-08-28T12:15:00.582] [ERROR] socket - code: 403, message: [login] Current user with id: 5b7aadc2d03ae050bdd5cdb9 isBan
+[2018-08-28T12:17:50.072] [ERROR] socket - code: 500, message: TEST
+[2018-08-28T12:18:10.495] [ERROR] socket - code: 500, message: TEST
+[2018-08-28T12:18:22.134] [ERROR] socket - code: 500, message: TEST
+[2018-08-28T12:19:29.578] [ERROR] socket - code: 500, message: TEST
+[2018-08-28T12:20:21.768] [ERROR] socket - code: 500, message: TEST
+[2018-08-28T12:20:45.627] [ERROR] socket - code: 403, message: [login] Current user with id: 5b7aadc2d03ae050bdd5cdb9 isBan
+[2018-08-28T12:20:53.711] [ERROR] socket - code: 403, message: [login] Current user with id: 5b7aadc2d03ae050bdd5cdb9 isBan
+[2018-08-28T12:58:57.464] [ERROR] socket - code: 400, message: Login data is uncorrected : null
+[2018-08-28T13:07:42.003] [ERROR] socket - code: 400, message: Login data is uncorrected : null
+[2018-08-28T13:07:57.834] [ERROR] socket - code: 400, message: Login data is uncorrected : null
+[2018-08-28T13:08:24.734] [ERROR] socket - code: 400, message: Login data is uncorrected : null
+[2018-08-28T13:09:49.833] [ERROR] socket - code: 400, message: Login data is uncorrected : null
+[2018-08-28T13:10:20.964] [ERROR] socket - code: 400, message: Login data is uncorrected : null
+[2018-08-28T13:12:08.323] [ERROR] socket - code: 400, message: Login data is uncorrected : null
+[2018-08-28T13:12:12.266] [ERROR] socket - code: 400, message: Login data is uncorrected : null

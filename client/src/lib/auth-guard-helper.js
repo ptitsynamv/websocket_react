@@ -4,6 +4,5 @@ export const AuthGuard = () => {
         return true
     }
     return false
-
 };
 

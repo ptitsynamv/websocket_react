@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import connect from "react-redux/es/connect/connect";
-import history from 'history'
 
 class Login extends React.Component {
 
@@ -10,13 +8,14 @@ class Login extends React.Component {
         this.submit = this.submit.bind(this);
     }
 
-    //todo  after login page redirect (history)
+
 
     submit(e) {
-        const {_email, _password} = this.refs;
-        const {onNewUser} = this.props;
         e.preventDefault();
-        console.log(onNewUser(_email.value, _password.value));
+        const {_email, _password} = this.refs;
+        const {onNewUser, history} = this.props;
+
+        onNewUser(_email.value, _password.value, history);
         _email.value = '';
         _password.value = '';
         _email.focus()

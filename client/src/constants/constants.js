@@ -6,6 +6,7 @@ const constants = {
 
     LOGIN_USER: "LOGIN_USER",
     LOGOUT_USER: "LOGOUT_USER",
+    UPDATE_USER:"UPDATE_USER",
 
     ADD_MESSAGE: "ADD_MESSAGE",
 
@@ -15,6 +16,9 @@ const constants = {
     PAGINATION_MESSAGE: "PAGINATION_MESSAGE",
     PAGINATION_SKIP: "PAGINATION_SKIP",
     PAGINATION_LIMIT: "PAGINATION_LIMIT",
+
+    ADD_ERROR: "ADD_ERROR",
+    REMOVE_ERROR:"REMOVE_ERROR"
 };
 
 export default constants
