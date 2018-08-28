@@ -10,7 +10,9 @@ killall -9 node
 
 Start project:
 1. cd client
+
 npm start
 
 2. cd server
+
 npm run dev
