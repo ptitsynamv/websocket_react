@@ -1,6 +1,7 @@
 import {NavLink} from 'react-router-dom'
 import React from 'react'
 import {AuthGuard} from '../../lib/auth-guard-helper'
+import {Navbar, NavItem} from "react-materialize";
 
 const selectedStyle = {
     backgroundColor: "white",
@@ -8,23 +9,32 @@ const selectedStyle = {
 };
 
 export const MainMenu = () =>
-    <nav className="main-menu">
-        {!AuthGuard() &&
-        <NavLink exact to="/" activeStyle={selectedStyle}>
-            [Login Page]
-        </NavLink>}
-        <NavLink to="/chat" activeStyle={selectedStyle}>
-            [Chat Page]
-        </NavLink>
-        <NavLink to="/about" activeStyle={selectedStyle}>
-            [About Page]
-        </NavLink>
-
-        {AuthGuard() &&
-        <NavLink to="/logout" activeStyle={selectedStyle}>
-            [Logout Page]
-        </NavLink>}
-    </nav>
+    (
+        <Navbar brand='logo' right>
+            <NavItem>
+                {!AuthGuard() &&
+                <NavLink exact to="/" activeStyle={selectedStyle}>
+                    [Login Page]
+                </NavLink>}
+            </NavItem>
+            <NavItem>
+                <NavLink to="/chat" activeStyle={selectedStyle}>
+                    [Chat Page]
+                </NavLink>
+            </NavItem>
+            <NavItem>
+                <NavLink to="/about" activeStyle={selectedStyle}>
+                    [About Page]
+                </NavLink>
+            </NavItem>
+            <NavItem>
+                {AuthGuard() &&
+                <NavLink to="/logout" activeStyle={selectedStyle}>
+                    [Logout Page]
+                </NavLink>}
+            </NavItem>
+        </Navbar>
+    );
 
 
 export const AboutMenu = () =>

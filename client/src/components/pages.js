@@ -3,7 +3,7 @@ import {Route} from 'react-router-dom'
 import {MainMenu, AboutMenu} from './ui/Menu'
 import {ContainerLogin, ContainerChat} from './containers'
 import {AuthGuard} from '../lib/auth-guard-helper';
-import {logoutUser} from '../actions/currentUserAction'
+import {logoutUser} from '../store/actions/currentUserAction'
 import {ErrorContainer} from "./containers";
 import {getAbout} from "../lib/api-helpers";
 
@@ -99,7 +99,7 @@ export const Error404Page = ({location}) =>
     <PageTemplate>
         <div className="error-404">
             <h2>404</h2>
-            <div>Resource not found at '{location.pathname}'</div>
+            <p>Resource not found at '{location.pathname}'</p>
         </div>
     </PageTemplate>
 

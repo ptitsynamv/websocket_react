@@ -1,4 +1,4 @@
-import C from '../constants/constants';
+import C from '../../constants/constants';
 
 let defaultState = {
     [C.PAGINATION_SKIP]: 0,

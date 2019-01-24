@@ -15,6 +15,7 @@ import {
 } from "../../helpers/socket";
 import C from '../../constants/constants'
 import Loader from "./Loader";
+import {Col, Card, Row, Button} from "react-materialize";
 
 class Chat extends React.Component {
     constructor(props) {
@@ -52,9 +53,8 @@ class Chat extends React.Component {
             return true;
         });
 
-        Promise.all([promiseLogin, promiseAllUsers, promiseMessages]).then(v => {
-            this.setState({isLoading: false});
-        });
+        Promise.all([promiseLogin, promiseAllUsers, promiseMessages])
+            .then(v => this.setState({isLoading: false}));
 
 
         subscribeError(data => {
@@ -118,7 +118,7 @@ class Chat extends React.Component {
             userForBanId: userId,
             sender: this.props.currentUser.token
         })
-    }
+    };
 
     onMute(userId) {
         if (!this.props.currentUser.isAdmin) {
@@ -128,14 +128,121 @@ class Chat extends React.Component {
             userForMuteId: userId,
             sender: this.props.currentUser.token
         })
+    };
+
+    getUsers = () => {
+        const {currentUser, users} = this.props;
+        return users
+            .filter(user => (user.id !== currentUser.id) && (user.isOnline || currentUser.isAdmin));
+    };
+
+    getAdminAction = (user) => {
+        const {currentUser} = this.props;
+        if (currentUser.isAdmin) {
+            return (
+                <div>
+                    <Button
+                        className='blue darken-1'
+                        onClick={this.onMute.bind(this, user.id)}
+                    >
+                        {user.isMute ? 'UnMute' : 'Mute'}
+                    </Button>
+                    <Button
+                        className='red darken-4'
+                        onClick={this.onBan.bind(this, user.id)}
+                    >
+                        {user.isBan ? 'UnBan' : 'Ban'}
+                    </Button>
+                </div>
+            )
+        }
+    };
+
+    getShowPreviousMessage = () => {
+        return (
+            <div>
+                <Button
+                    className="indigo lighten-2"
+                    onClick={this.showPreviousMessage}
+                >
+                    Show Previous Message!
+                </Button>
+            </div>
+        )
+    };
+
+    getSortMessages = () => {
+        const {currentUser, sortMessages} = this.props;
+        if (sortMessages) {
+            return (
+                sortMessages.map((message, i) =>
+                    <div
+                        key={i}
+                        className={message.userId !== currentUser.id ? 'sender rounded' : 'receiver rounded'}>
+
+                        <div
+                            className={message.userId !== currentUser.id ? 'd-flex flex-row bd-highlight mb-3' : 'd-flex flex-row-reverse bd-highlight mb-3'}>
+
+                            <div className="p-2 bd-highlight" style={{backgroundColor: message.color}}>
+                                <div>{message.userName}:</div>
+                                {message.comment}
+                            </div>
+                        </div>
+                    </div>
+                )
+            )
+        }
     }
 
     render() {
+        const {currentUser} = this.props;
+        const {isLoading, isExistPreviousMessage} = this.state;
+
+        if (isLoading) {
+            return (<Loader/>)
+        }
+        const users = this.getUsers();
+        return (
+            <section>
+                <Row>
+                    <Col m={4} s={4} className='blue lighten-3'>
+                        <Card
+                            key={0}
+                            title='Current User'
+                            className='blue lighten-2'
+                        >
+                            {currentUser.email}
+                        </Card>
+                        {
+                            users.map((user, i) =>
+                                <Card
+                                    title={user.email}
+                                    className='blue lighten-4'
+                                    key={i}
+                                >
+                                    {user.isOnline && 'Online'}
+                                    {this.getAdminAction(user)}
+                                </Card>
+                            )
+                        }
+                    </Col>
+                    <Col m={8} s={8} className='indigo lighten-3'>
+                        {isExistPreviousMessage && this.getShowPreviousMessage()}
+
+                        {this.getSortMessages()}
+                    </Col>
+                </Row>
+            </section>
+        )
+
+    }
+
+    renderLegacy() {
         const {currentUser, users, sortMessages} = this.props;
         const {isExistPreviousMessage, isCanSendMessage, isLoading} = this.state;
 
         return (
-            <div>
+            <section>
                 {isLoading && <Loader/>}
                 {!isLoading &&
                 <div className="row">
@@ -212,7 +319,7 @@ class Chat extends React.Component {
                             <form onSubmit={this.submit}>
                                 <textarea ref="_message" required defaultValue="masha"/>
                                 <button className="btn btn-primary"
-                                    disabled={!isCanSendMessage && currentUser.isMute}>
+                                        disabled={!isCanSendMessage && currentUser.isMute}>
                                     Submit
                                 </button>
                             </form>
@@ -220,7 +327,7 @@ class Chat extends React.Component {
                     </div>
                 </div>
                 }
-            </div>
+            </section>
         )
     }
 }
