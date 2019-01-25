@@ -178,16 +178,11 @@ class Chat extends React.Component {
                 sortMessages.map((message, i) =>
                     <div
                         key={i}
-                        className={message.userId !== currentUser.id ? 'sender rounded' : 'receiver rounded'}>
-
-                        <div
-                            className={message.userId !== currentUser.id ? 'd-flex flex-row bd-highlight mb-3' : 'd-flex flex-row-reverse bd-highlight mb-3'}>
-
-                            <div className="p-2 bd-highlight" style={{backgroundColor: message.color}}>
-                                <div>{message.userName}:</div>
+                        className={message.userId !== currentUser.id ? 'sender' : 'receiver'}>
+                            <div style={{backgroundColor: message.color}}>
+                                <p>{message.userName}:</p>
                                 {message.comment}
                             </div>
-                        </div>
                     </div>
                 )
             )
@@ -203,7 +198,7 @@ class Chat extends React.Component {
         }
         const users = this.getUsers();
         return (
-            <section>
+            <section className="chat-section">
                 <Row>
                     <Col m={4} s={4} className='blue lighten-3'>
                         <Card
@@ -229,7 +224,9 @@ class Chat extends React.Component {
                     <Col m={8} s={8} className='indigo lighten-3'>
                         {isExistPreviousMessage && this.getShowPreviousMessage()}
 
-                        {this.getSortMessages()}
+                        <div className="messages-wrap">
+                            {this.getSortMessages()}
+                        </div>
                     </Col>
                 </Row>
             </section>
