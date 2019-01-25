@@ -2,7 +2,7 @@ import React from 'react'
 import {HashRouter, Route, Switch, Redirect} from 'react-router-dom'
 import {ChatPage, Error404Page, AboutPage, LoginPage, LogoutPage} from "./pages";
 import {ContainerUserDetails} from './containers'
-
+import '../index.scss';
 window.React = React;
 
 

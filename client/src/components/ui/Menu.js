@@ -11,28 +11,20 @@ const selectedStyle = {
 export const MainMenu = () =>
     (
         <Navbar brand='logo' right>
-            <NavItem>
-                {!AuthGuard() &&
-                <NavLink exact to="/" activeStyle={selectedStyle}>
-                    [Login Page]
-                </NavLink>}
+            {!AuthGuard() &&
+            <NavItem exact to="/">
+                [Login Page]
+            </NavItem>}
+            <NavItem to="/chat">
+                [Chat Page]
             </NavItem>
-            <NavItem>
-                <NavLink to="/chat" activeStyle={selectedStyle}>
-                    [Chat Page]
-                </NavLink>
+            <NavItem to="/about">
+                [About Page]
             </NavItem>
-            <NavItem>
-                <NavLink to="/about" activeStyle={selectedStyle}>
-                    [About Page]
-                </NavLink>
-            </NavItem>
-            <NavItem>
-                {AuthGuard() &&
-                <NavLink to="/logout" activeStyle={selectedStyle}>
-                    [Logout Page]
-                </NavLink>}
-            </NavItem>
+            {AuthGuard() &&
+            <NavItem to="/logout">
+                [Logout Page]
+            </NavItem>}
         </Navbar>
     );
 

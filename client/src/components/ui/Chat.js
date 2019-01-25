@@ -70,10 +70,6 @@ class Chat extends React.Component {
         });
     }
 
-    // componentWillUnmount(){
-    //     socketClose();
-    // }
-
     logout() {
         this.props.onLogout();
         emitLogout(this.props.currentUser.token);
@@ -162,7 +158,7 @@ class Chat extends React.Component {
         return (
             <div>
                 <Button
-                    className="indigo lighten-2"
+                    className="indigo lighten-1"
                     onClick={this.showPreviousMessage}
                 >
                     Show Previous Message!
@@ -178,16 +174,34 @@ class Chat extends React.Component {
                 sortMessages.map((message, i) =>
                     <div
                         key={i}
-                        className={message.userId !== currentUser.id ? 'sender' : 'receiver'}>
-                            <div style={{backgroundColor: message.color}}>
-                                <p>{message.userName}:</p>
-                                {message.comment}
-                            </div>
+                        className={message.userId === currentUser.id ? 'sender' : 'receiver'}
+                        style={{backgroundColor: message.color}}
+                    >
+
+                        <p className="username">{message.userName}:</p>
+                        <p className="message">{message.comment}</p>
+
                     </div>
                 )
             )
         }
-    }
+    };
+
+    getForm = () => {
+        const {currentUser} = this.props;
+        const {isCanSendMessage} = this.state;
+        return (
+            <form onSubmit={this.submit}>
+                <textarea ref="_message" required defaultValue="masha"/>
+                <div className="button-wrap">
+                    <Button className="indigo"
+                            disabled={!isCanSendMessage && currentUser.isMute}>
+                        Submit
+                    </Button>
+                </div>
+            </form>
+        )
+    };
 
     render() {
         const {currentUser} = this.props;
@@ -222,108 +236,17 @@ class Chat extends React.Component {
                         }
                     </Col>
                     <Col m={8} s={8} className='indigo lighten-3'>
-                        {isExistPreviousMessage && this.getShowPreviousMessage()}
-
+                       <div className="show-prev-message">
+                           {isExistPreviousMessage && this.getShowPreviousMessage()}
+                       </div>
                         <div className="messages-wrap">
                             {this.getSortMessages()}
                         </div>
+                        <div className="form-wrap">
+                            {this.getForm()}
+                        </div>
                     </Col>
                 </Row>
-            </section>
-        )
-
-    }
-
-    renderLegacy() {
-        const {currentUser, users, sortMessages} = this.props;
-        const {isExistPreviousMessage, isCanSendMessage, isLoading} = this.state;
-
-        return (
-            <section>
-                {isLoading && <Loader/>}
-                {!isLoading &&
-                <div className="row">
-                    <div className="col-md-4">
-                        {currentUser.email}
-
-                        {users && <ul className="list-group">
-                            {users
-                                .filter(v => v.id !== currentUser.id)
-                                .map((user, i) =>
-                                    (user.isOnline || currentUser.isAdmin) &&
-                                    <li
-                                        className="list-group-item"
-                                        key={i}
-                                    >{user.isOnline && 'Online'} {user.email}
-                                        {currentUser.isAdmin &&
-                                        <div className="d-flex flex-column bd-highlight mb-2">
-                                            <div className="p-2 bd-highlight">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-warning btn-sm"
-                                                    onClick={this.onMute.bind(this, user.id)}
-                                                >
-                                                    {user.isMute ? 'UnMute' : 'Mute'}
-                                                </button>
-                                            </div>
-                                            <div className="p-2 bd-highlight">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn btn-danger btn-sm"
-                                                    onClick={this.onBan.bind(this, user.id)}
-                                                >
-                                                    {user.isBan ? 'UnBan' : 'Ban'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                        }
-                                    </li>
-                                )}
-                        </ul>}
-
-                    </div>
-                    <div className="col-md-8">
-                        <div className="col">
-                            {isExistPreviousMessage &&
-                            <div className="text-center">
-                                <button type="button" className="btn btn-info" onClick={this.showPreviousMessage}>
-                                    Show Previous Message!
-                                </button>
-                            </div>
-                            }
-
-                            {sortMessages && sortMessages.length !== 0 &&
-                            sortMessages.map((message, i) =>
-                                <div
-                                    key={i}
-                                    className={message.userId !== currentUser.id ? 'sender rounded' : 'receiver rounded'}>
-
-                                    <div
-                                        className={message.userId !== currentUser.id ? 'd-flex flex-row bd-highlight mb-3' : 'd-flex flex-row-reverse bd-highlight mb-3'}>
-
-                                        <div className="p-2 bd-highlight" style={{backgroundColor: message.color}}>
-                                            <div>{message.userName}:</div>
-                                            {message.comment}
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                            }
-                        </div>
-
-                        <div className="w-100"></div>
-                        <div className="col">
-                            <form onSubmit={this.submit}>
-                                <textarea ref="_message" required defaultValue="masha"/>
-                                <button className="btn btn-primary"
-                                        disabled={!isCanSendMessage && currentUser.isMute}>
-                                    Submit
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                }
             </section>
         )
     }
