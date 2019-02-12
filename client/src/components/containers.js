@@ -3,7 +3,8 @@ import Login from './ui/Login';
 import UserDetails from './ui/UserDetails'
 import {loginUser, logoutUser, updateCurrentUser} from "../store/actions/currentUserAction";
 import {findById, sortFunction} from '../lib/array-helpers'
-import Chat from './ui/Chat'
+import Chat from './ui/chat/Chat'
+import ChatLeftMenu from './ui/chat/LeftMenu'
 import {addUser} from "../store/actions/userActions";
 import {addMessage} from "../store/actions/messageActions";
 import {updatePagination} from "../store/actions/paginationAction";
@@ -59,6 +60,16 @@ export const ContainerChat = connect(
             }
         })
 )(Chat);
+
+
+export const ContainerChatLeftMenu = connect(
+    (state, data) =>
+        ({
+            currentUser: state.currentUser,
+            users: state.users,
+        }),
+    null
+)(ChatLeftMenu);
 
 export const ErrorContainer = connect(
     state =>

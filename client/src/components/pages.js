@@ -8,11 +8,13 @@ import {ErrorContainer} from "./containers";
 import {getAbout} from "../lib/api-helpers";
 
 const PageTemplate = ({children}) =>
-    <div className="page">
+    <section>
         <ErrorContainer/>
-        <MainMenu/>
-        {children}
-    </div>;
+        <div className="wrap">
+            <MainMenu/>
+            {children}
+        </div>
+    </section>;
 
 export const LoginPage = ({history}) => {
     if (AuthGuard()) {
@@ -41,7 +43,7 @@ export const ChatPage = ({history}) => {
     }
     return (<PageTemplate>
             <section className="chat">
-                <h2>[Chap Page]</h2>
+                <h3>[Chap Page]</h3>
                 <ContainerChat history={history}/>
             </section>
         </PageTemplate>

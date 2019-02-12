@@ -8,14 +8,13 @@ import {
     emitGetPreviousMessage,
     emitMessage,
     subscribeError,
-    emitBan,
-    emitMute,
     subscribeDisconnect,
     socketClose
-} from "../../helpers/socket";
-import C from '../../constants/constants'
-import Loader from "./Loader";
-import {Col, Card, Row, Button} from "react-materialize";
+} from "../../../helpers/socket";
+import C from '../../../constants/constants'
+import Loader from "../Loader";
+import {Col, Row, Button} from "react-materialize";
+import {ContainerChatLeftMenu} from "../../containers";
 
 class Chat extends React.Component {
     constructor(props) {
@@ -27,8 +26,6 @@ class Chat extends React.Component {
         };
         this.submit = this.submit.bind(this);
         this.showPreviousMessage = this.showPreviousMessage.bind(this);
-        this.onBan = this.onBan.bind(this);
-        this.onMute = this.onMute.bind(this);
         this.logout = this.logout.bind(this);
     }
 
@@ -106,54 +103,6 @@ class Chat extends React.Component {
             });
     }
 
-    onBan(userId) {
-        if (!this.props.currentUser.isAdmin) {
-            return;
-        }
-        emitBan({
-            userForBanId: userId,
-            sender: this.props.currentUser.token
-        })
-    };
-
-    onMute(userId) {
-        if (!this.props.currentUser.isAdmin) {
-            return;
-        }
-        emitMute({
-            userForMuteId: userId,
-            sender: this.props.currentUser.token
-        })
-    };
-
-    getUsers = () => {
-        const {currentUser, users} = this.props;
-        return users
-            .filter(user => (user.id !== currentUser.id) && (user.isOnline || currentUser.isAdmin));
-    };
-
-    getAdminAction = (user) => {
-        const {currentUser} = this.props;
-        if (currentUser.isAdmin) {
-            return (
-                <div>
-                    <Button
-                        className='blue darken-1'
-                        onClick={this.onMute.bind(this, user.id)}
-                    >
-                        {user.isMute ? 'UnMute' : 'Mute'}
-                    </Button>
-                    <Button
-                        className='red darken-4'
-                        onClick={this.onBan.bind(this, user.id)}
-                    >
-                        {user.isBan ? 'UnBan' : 'Ban'}
-                    </Button>
-                </div>
-            )
-        }
-    };
-
     getShowPreviousMessage = () => {
         return (
             <div>
@@ -204,41 +153,19 @@ class Chat extends React.Component {
     };
 
     render() {
-        const {currentUser} = this.props;
         const {isLoading, isExistPreviousMessage} = this.state;
-
         if (isLoading) {
             return (<Loader/>)
         }
-        const users = this.getUsers();
         return (
             <section className="chat-section">
                 <Row>
-                    <Col m={4} s={4} className='blue lighten-3'>
-                        <Card
-                            key={0}
-                            title='Current User'
-                            className='blue lighten-2'
-                        >
-                            {currentUser.email}
-                        </Card>
-                        {
-                            users.map((user, i) =>
-                                <Card
-                                    title={user.email}
-                                    className='blue lighten-4'
-                                    key={i}
-                                >
-                                    {user.isOnline && 'Online'}
-                                    {this.getAdminAction(user)}
-                                </Card>
-                            )
-                        }
-                    </Col>
-                    <Col m={8} s={8} className='indigo lighten-3'>
-                       <div className="show-prev-message">
-                           {isExistPreviousMessage && this.getShowPreviousMessage()}
-                       </div>
+                    <ContainerChatLeftMenu/>
+
+                    <Col m={8} s={8} className='right-menu indigo lighten-3'>
+                        <div className="show-prev-message">
+                            {isExistPreviousMessage && this.getShowPreviousMessage()}
+                        </div>
                         <div className="messages-wrap">
                             {this.getSortMessages()}
                         </div>
@@ -246,6 +173,7 @@ class Chat extends React.Component {
                             {this.getForm()}
                         </div>
                     </Col>
+
                 </Row>
             </section>
         )

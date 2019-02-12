@@ -1,38 +1,50 @@
 .chat-section {
   .row {
-    .show-prev-message{
-      display: flex;
-      justify-content: center;
-    }
-
-    .messages-wrap {
-      display: flex;
-      flex-direction: column;
-      .sender, .receiver {
-        margin-top: 10px;
-        width: 40%;
-        border-radius: 10%;
+    .left-menu {
+      .card-title {
+        font-size: 17px;
       }
-      .sender {
-        align-self: flex-end;
-      }
-      .receiver {
-        align-self: flex-start;
-      }
-      .username {
-        font-weight: bold;
-      }
-      .message {
-
+      button {
+        width: 50%;
+        font-size: 12px;
       }
     }
-    .form-wrap {
-      textarea{
-        border: 1px solid #c5cae9;
-      }
-      .button-wrap {
+
+    .right-menu {
+      .show-prev-message {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
+      }
+
+      .messages-wrap {
+        display: flex;
+        flex-direction: column;
+        .sender, .receiver {
+          margin-top: 10px;
+          width: 40%;
+          border-radius: 10%;
+        }
+        .sender {
+          align-self: flex-end;
+        }
+        .receiver {
+          align-self: flex-start;
+        }
+        .username {
+          font-weight: bold;
+        }
+        .message {
+
+        }
+      }
+      .form-wrap {
+        textarea {
+          border: 1px solid #c5cae9;
+        }
+        .button-wrap {
+          display: flex;
+          justify-content: flex-end;
+        }
       }
     }
   }
