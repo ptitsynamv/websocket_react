@@ -3,16 +3,18 @@ import {Route} from 'react-router-dom'
 import {MainMenu, AboutMenu} from './ui/Menu'
 import {ContainerLogin, ContainerChat} from './containers'
 import {AuthGuard} from '../lib/auth-guard-helper';
-import {logoutUser} from '../actions/currentUserAction'
+import {logoutUser} from '../store/actions/currentUserAction'
 import {ErrorContainer} from "./containers";
 import {getAbout} from "../lib/api-helpers";
 
 const PageTemplate = ({children}) =>
-    <div className="page">
+    <section>
         <ErrorContainer/>
-        <MainMenu/>
-        {children}
-    </div>;
+        <div className="wrap">
+            <MainMenu/>
+            {children}
+        </div>
+    </section>;
 
 export const LoginPage = ({history}) => {
     if (AuthGuard()) {
@@ -41,7 +43,7 @@ export const ChatPage = ({history}) => {
     }
     return (<PageTemplate>
             <section className="chat">
-                <h2>[Chap Page]</h2>
+                <h3>[Chap Page]</h3>
                 <ContainerChat history={history}/>
             </section>
         </PageTemplate>
@@ -99,7 +101,7 @@ export const Error404Page = ({location}) =>
     <PageTemplate>
         <div className="error-404">
             <h2>404</h2>
-            <div>Resource not found at '{location.pathname}'</div>
+            <p>Resource not found at '{location.pathname}'</p>
         </div>
     </PageTemplate>
 

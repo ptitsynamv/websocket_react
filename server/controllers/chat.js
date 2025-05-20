@@ -23,7 +23,7 @@ function getLastMessages(limit = 2, skip = 0, currentSocket = false) {
             }
             allModels.forEach((value) => {
                 messageArray.push({
-                    id:value._id,
+                    id: value._id,
                     userId: value.user._id,
                     userName: value.user.email,
                     comment: value.comment,
@@ -69,63 +69,147 @@ function updateUsers(userUpdate = null) {
     emitEvent('allUsers', helpFunctions.mapToObj(allUsers));
 }
 
+const loginCallback = (socket, data) => {
+    return new Promise((resolve, reject) => {
+        if (!data) {
+            return reject({
+                socket,
+                message: `Login data is uncorrected : ${data}`,
+                code: 404
+            })
+        }
+        resolve(data)
+    })
+        .then(data => {
+            return new Promise((resolve, reject) => {
+                return jwt.verify(data, keys.jwt, (err, decodedCurrentUser) => {
+                    if (err) {
+                        return reject({err})
+                    }
+                    resolve(decodedCurrentUser)
+                })
+            })
+        })
+        .then(decodedCurrentUser => {
+            return new Promise((resolve, reject) => {
+                if (!decodedCurrentUser) {
+                    return reject({
+                        socket,
+                        message: '[login] The tokens lifetime has expired',
+                        code: 401,
+                    })
+                }
+                if (!decodedCurrentUser.userId) {
+                    return reject({
+                        socket,
+                        message: '[login] Login decodedCurrentUser is uncorrected',
+                        code: 400,
+                    })
+                }
+                resolve(decodedCurrentUser)
+            });
+        })
+        .then(decodedCurrentUser => {
+            //TODO the same user is authorized at the same time from different locations
+            peers.set(decodedCurrentUser.userId, socket);
+            return decodedCurrentUser;
+        })
+        .then(decodedCurrentUser => {
+            return new Promise((resolve, reject) => {
+                User.findById(decodedCurrentUser.userId, (err, currentUser) => {
+                    if (err) {
+                        return reject({err, socket, code: 500})
+                    }
+
+                    if (!currentUser) {
+                        return reject({
+                            socket,
+                            message: `[login] Current user for login with id: ${decodedCurrentUser.userId} is not found`,
+                            code: 404
+                        });
+                    }
+                    if (currentUser.isBan) {
+                        if (peers.has(decodedCurrentUser.userId)) {
+                            (peers.get(decodedCurrentUser.userId)).disconnect();
+                            peers.delete(decodedCurrentUser.userId);
+                        }
+                        return reject({
+                            socket,
+                            message: `[login] Current user with id: ${decodedCurrentUser.userId} isBan`,
+                            code: 403
+                        });
+                    }
+                    resolve();
+                })
+            })
+        })
+        .then(_ => {
+            return new Promise((resolve, reject) => {
+                User.find({}, (err, allModels) => {
+                    if (err) {
+                        return reject({err, socket, code: 500})
+                    }
+                    allModels.forEach((value) => {
+                        allUsers.set(value._id.toString(), {
+                            id: value._id,
+                            email: value.email,
+                            isAdmin: value.isAdmin,
+                            isBan: value.isBan,
+                            isMute: value.isMute,
+                        });
+                    });
+                    updateUsers();
+                    getLastMessages(2, 0, socket);
+                    resolve();
+                });
+            })
+        })
+        .catch(({err, socket, message, code}) => {
+            if (err) {
+                // TODO
+            }
+            helpFunctions.errorSocket(socket, message, code);
+        });
+};
+
+function asyncFlowWithThunks(generatorFunction) {
+    function callback(err) {
+        if (err) {
+            return generator.throw(err);
+        }
+        const results = [].slice.call(arguments, 1);
+        const thunk = generator.next(results.length > 1 ? results : results[0]).value;
+        thunk && thunk(callback);
+    }
+
+    // first start
+    const generator = generatorFunction();
+    const thunk = generator.next().value;
+    thunk && thunk(callback);
+}
+
+function* messageCallback(message) {
+    const decodedCurrentUser = yield jwt.verify(
+        message.sender,
+        keys.jwt,
+        (err, decodedCurrentUser) => ({
+            err,
+            decodedCurrentUser
+        }));
+    const user = yield User
+        .findOne({_id: decodedCurrentUser.userId})
+        .exec()
+        .then(currentUser => currentUser)
+        .catch(err => err);
+
+    return 'finish';
+}
+
 
 module.exports = function (wss) {
     wss.on('connection', (socket) => {
 
-        socket.on('login', (data) => {
-            if (!data) {
-                helpFunctions.errorSocket(socket, `Login data is uncorrected : ${data}`, 400);
-                return;
-            }
-
-            jwt.verify(data, keys.jwt, function (err, decodedCurrentUser) {
-                if (!decodedCurrentUser) {
-                    helpFunctions.errorSocket(socket, '[login] The tokens lifetime has expired', 401);
-                    return;
-                }
-                if (!decodedCurrentUser.userId) {
-                    helpFunctions.errorSocket(socket, '[login] Login decodedCurrentUser is uncorrected', 400);
-                    return;
-                }
-
-                //TODO the same user is authorized at the same time from different locations
-                peers.set(decodedCurrentUser.userId, socket);
-
-                User.findById(decodedCurrentUser.userId, (err, currentUser) => {
-                    if (err) {
-                        helpFunctions.errorSocket(socket, err, 500);
-                        return;
-                    }
-                    if (!currentUser) {
-                        helpFunctions.errorSocket(socket, `[login] Current user for login with id: ${decodedCurrentUser.userId} is not found`, 404);
-                        return;
-                    }
-                    if (currentUser.isBan) {
-                        helpFunctions.errorSocket(socket, `[login] Current user with id: ${decodedCurrentUser.userId} isBan`, 403);
-                        if (peers.has(decodedCurrentUser.userId)) {
-                            (peers.get(decodedCurrentUser.userId)).disconnect();
-                            peers.delete(decodedCurrentUser.userId);
-                            return;
-                        }
-                    }
-
-                    User.find({}, (err, allModels) => {
-                        allModels.forEach((value) => {
-                            allUsers.set(value._id.toString(), {
-                                id: value._id,
-                                email: value.email,
-                                isAdmin: value.isAdmin,
-                                isBan: value.isBan,
-                                isMute: value.isMute,
-                            });
-                        });
-                        updateUsers();
-                        getLastMessages(2, 0, socket);
-                    });
-                });
-            });
-        });
+        socket.on('login', data => loginCallback(socket, data));
 
         socket.on('logout', (data) => {
             if (!data) {
@@ -151,9 +235,23 @@ module.exports = function (wss) {
 
         socket.on('message', (message) => {
             if (!message || !message.sender) {
-                helpFunctions.errorSocket(socket, `[message] message data is uncorrected : ${message}`, 400);
-                return;
+                return helpFunctions.errorSocket(socket, `[message] message data is uncorrected : ${message}`, 400);
             }
+
+            const gen = messageCallback(message);
+            const valueDecoded = gen.next().value;
+            if (valueDecoded.err) {
+                return helpFunctions.errorSocket(socket, '[message] The tokens lifetime has expired', 401);
+            }
+            const valueUser = gen.next(valueDecoded).value;
+            console.log('valueUser', valueUser);
+            return
+            if (valueUser.err) {
+                return helpFunctions.errorSocket(socket, valueUser.err, 500);
+            }
+
+            console.log('valueUser', valueUser.currentUser);
+
 
             jwt.verify(message.sender, keys.jwt, function (err, decodedCurrentUser) {
                 if (!decodedCurrentUser) {
@@ -326,7 +424,7 @@ module.exports = function (wss) {
 
         socket.on('getPreviousMessage', (message) => {
 
-            if (!message ||  !message.paginationLimit) {
+            if (!message || !message.paginationLimit) {
                 helpFunctions.errorSocket(socket, `[getPreviousMessage] data is uncorrected : ${message}`, 400);
                 return;
             }

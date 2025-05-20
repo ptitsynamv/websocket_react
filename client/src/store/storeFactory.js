@@ -1,10 +1,10 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux'
-import {users} from '../reducers/userReducers';
-import {messages} from "../reducers/messageReducers";
-import {currentUser} from "../reducers/currentUserReducers";
-import {sort} from "../reducers/sortRedusers";
-import {pagination} from "../reducers/paginationReducers";
-import {error} from "../reducers/errorRedusers";
+import {users} from './reducers/userReducers';
+import {messages} from "./reducers/messageReducers";
+import {currentUser} from "./reducers/currentUserReducers";
+import {sort} from "./reducers/sortRedusers";
+import {pagination} from "./reducers/paginationReducers";
+import {error} from "./reducers/errorRedusers";
 //import stateData from './state'
 import thunk from 'redux-thunk'
 

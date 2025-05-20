@@ -1,4 +1,4 @@
-import C from '../constants/constants';
+import C from '../../constants/constants';
 
 export const sort = (state = C.SORTED_BY_DATE, action) => {
     switch (action.type) {

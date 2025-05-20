@@ -1,13 +1,14 @@
 import {connect} from 'react-redux';
 import Login from './ui/Login';
 import UserDetails from './ui/UserDetails'
-import {loginUser, logoutUser, updateCurrentUser} from "../actions/currentUserAction";
+import {loginUser, logoutUser, updateCurrentUser} from "../store/actions/currentUserAction";
 import {findById, sortFunction} from '../lib/array-helpers'
-import Chat from './ui/Chat'
-import {addUser} from "../actions/userActions";
-import {addMessage} from "../actions/messageActions";
-import {updatePagination} from "../actions/paginationAction";
-import {addError, removeError} from "../actions/errorAction";
+import Chat from './ui/chat/Chat'
+import ChatLeftMenu from './ui/chat/LeftMenu'
+import {addUser} from "../store/actions/userActions";
+import {addMessage} from "../store/actions/messageActions";
+import {updatePagination} from "../store/actions/paginationAction";
+import {addError, removeError} from "../store/actions/errorAction";
 import ErrorHandler from './ui/ErrorHandler'
 
 
@@ -59,6 +60,16 @@ export const ContainerChat = connect(
             }
         })
 )(Chat);
+
+
+export const ContainerChatLeftMenu = connect(
+    (state, data) =>
+        ({
+            currentUser: state.currentUser,
+            users: state.users,
+        }),
+    null
+)(ChatLeftMenu);
 
 export const ErrorContainer = connect(
     state =>

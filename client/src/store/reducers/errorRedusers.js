@@ -1,4 +1,4 @@
-import C from '../constants/constants';
+import C from '../../constants/constants';
 
 export const error = (state = {}, action) => {
     switch (action.type) {

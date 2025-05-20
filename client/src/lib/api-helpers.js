@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import C from "../constants/constants";
-import {addError} from "../actions/errorAction";
+import {addError} from "../store/actions/errorAction";
 
 const parseResponse = response => response.json();
 

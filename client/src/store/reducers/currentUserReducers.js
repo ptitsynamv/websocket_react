@@ -1,4 +1,4 @@
-import C from '../constants/constants';
+import C from '../../constants/constants';
 
 
 const setCurrentUserToLocalStorage = ({id, email, isAdmin, isMute, isBan, token}) => {

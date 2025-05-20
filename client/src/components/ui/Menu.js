@@ -3,28 +3,29 @@ import React from 'react'
 import {AuthGuard} from '../../lib/auth-guard-helper'
 
 const selectedStyle = {
-    backgroundColor: "white",
-    color: 'red'
+    color: '#304ffe'
 };
 
 export const MainMenu = () =>
-    <nav className="main-menu">
-        {!AuthGuard() &&
-        <NavLink exact to="/" activeStyle={selectedStyle}>
-            [Login Page]
-        </NavLink>}
-        <NavLink to="/chat" activeStyle={selectedStyle}>
-            [Chat Page]
-        </NavLink>
-        <NavLink to="/about" activeStyle={selectedStyle}>
-            [About Page]
-        </NavLink>
+    (
+        <nav className="main-menu">
+            {!AuthGuard() &&
+            <NavLink exact to="/" activeStyle={selectedStyle}>
+                [Login Page]
+            </NavLink>}
 
-        {AuthGuard() &&
-        <NavLink to="/logout" activeStyle={selectedStyle}>
-            [Logout Page]
-        </NavLink>}
-    </nav>
+            <NavLink to="/chat" activeStyle={selectedStyle}>
+                [Chat Page]
+            </NavLink>
+            <NavLink to="/about" activeStyle={selectedStyle}>
+                [About Page]
+            </NavLink>
+            {AuthGuard() &&
+            <NavLink to="/logout" activeStyle={selectedStyle}>
+                [Logout Page]
+            </NavLink>}
+        </nav>
+    );
 
 
 export const AboutMenu = () =>

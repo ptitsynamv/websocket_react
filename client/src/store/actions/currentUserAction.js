@@ -1,5 +1,5 @@
-import C from '../constants/constants'
-import {fetchThenDispatchLogin} from "../lib/api-helpers";
+import C from '../../constants/constants'
+import {fetchThenDispatchLogin} from "../../lib/api-helpers";
 
 export const loginUser = (email, password, history) => dispatch =>
     fetchThenDispatchLogin(
